@@ -7,20 +7,50 @@ import sys
 
 
 def apply_video_transform(transform, path):
+    
+    cap = cv.VideoCapture(path)
+    fps = int(round(cap.get(cv.CAP_PROP_FPS)))
+    width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
 
     if transform == 'flip_h':
         seq = iaa.Sequential([
              iaa.Fliplr(1),
         ])
+    elif transform == 'invert':
+        seq = iaa.Sequential([
+             iaa.Invert(1, True),
+        ])
+    elif transform == 'brigth':
+        seq = iaa.Sequential([
+             iaa.Multiply(1.5, True),
+        ])
+    elif transform == 'dark':
+        seq = iaa.Sequential([
+             iaa.Multiply(0.5, True),
+        ])
+    elif transform == 'blur':
+        seq = iaa.Sequential([
+             iaa.GaussianBlur(1),
+        ])
+    elif transform == 'sharp':
+        seq = iaa.Sequential([
+             iaa.Sharpen(1, 1.25),
+        ])
+    elif transform == 'dark_sharp':
+        seq = iaa.Sequential([
+             iaa.Sharpen(1, 0.25),
+        ])
+    elif transform == 'gauss_noise':
+        seq = iaa.Sequential([
+             iaa.AdditiveGaussianNoise(0.03, 10, True),
+        ])
     else:
-
         # So far it's only implemented horizontal flips 
         print("Sorry, only 'flip_h' is implemented yet. \
                 Check data_augmentation.py -help for further instructions")
         return
 
-    cap = cv.VideoCapture(path)
-    fps = int(round((cv.VideoCapture(path)).get(cv.CAP_PROP_FPS)))
 
     # So far it's hardcoded for '.mp4' format
     # Need to remove everything after '.' to add transform to it's name
@@ -30,7 +60,7 @@ def apply_video_transform(transform, path):
     
     path = path[:-4] + '_' + transform + '.mp4'
 
-    out = cv.VideoWriter(path, cv.VideoWriter_fourcc('M','J','P','G'), fps, (int(cap.get(cv.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))))
+    out = cv.VideoWriter(path, cv.VideoWriter_fourcc('M','J','P','G'), fps, (width, height))
 
     while cap.isOpened():
     
@@ -55,10 +85,40 @@ def apply_video_transform(transform, path):
     cv.destroyAllWindows()
 
 def apply_image_transform(transform, path): 
+    
+    img = np.asarray(cv.imread(path))
 
     if transform == 'flip_h':
         seq = iaa.Sequential([
              iaa.Fliplr(1),
+        ])
+    elif transform == 'invert':
+        seq = iaa.Sequential([
+             iaa.Invert(1, True),
+        ])
+    elif transform == 'brigth':
+        seq = iaa.Sequential([
+             iaa.Multiply(1.5, True),
+        ])
+    elif transform == 'dark':
+        seq = iaa.Sequential([
+             iaa.Multiply(0.5, True),
+        ])
+    elif transform == 'blur':
+        seq = iaa.Sequential([
+             iaa.GaussianBlur(0.5),
+        ])
+    elif transform == 'sharp':
+        seq = iaa.Sequential([
+             iaa.Sharpen(1, 1.25),
+        ])
+    elif transform == 'dark_sharp':
+        seq = iaa.Sequential([
+             iaa.Sharpen(1, 0.25),
+        ])
+    elif transform == 'gauss_noise':
+        seq = iaa.Sequential([
+             iaa.AdditiveGaussianNoise(0.03, 10, True),
         ])
     else:
 
@@ -66,8 +126,6 @@ def apply_image_transform(transform, path):
         print("Sorry, only 'flip_h' is implemented yet. \
                 Check data_augmentation.py -help for further instructions")
         return
-
-    img = np.asarray(cv.imread(path))
 
     images = []
 
