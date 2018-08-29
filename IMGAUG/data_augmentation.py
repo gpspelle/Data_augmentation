@@ -13,44 +13,10 @@ def apply_video_transform(transform, path):
     width = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
 
-    if transform == 'flip_h':
-        seq = iaa.Sequential([
-             iaa.Fliplr(1),
-        ])
-    elif transform == 'invert':
-        seq = iaa.Sequential([
-             iaa.Invert(1, True),
-        ])
-    elif transform == 'brigth':
-        seq = iaa.Sequential([
-             iaa.Multiply(1.5, True),
-        ])
-    elif transform == 'dark':
-        seq = iaa.Sequential([
-             iaa.Multiply(0.5, True),
-        ])
-    elif transform == 'blur':
-        seq = iaa.Sequential([
-             iaa.GaussianBlur(1),
-        ])
-    elif transform == 'sharp':
-        seq = iaa.Sequential([
-             iaa.Sharpen(1, 1.25),
-        ])
-    elif transform == 'dark_sharp':
-        seq = iaa.Sequential([
-             iaa.Sharpen(1, 0.25),
-        ])
-    elif transform == 'gauss_noise':
-        seq = iaa.Sequential([
-             iaa.AdditiveGaussianNoise(0.03, 10, True),
-        ])
-    else:
-        # So far it's only implemented horizontal flips 
-        print("Sorry, only 'flip_h' is implemented yet. \
-                Check data_augmentation.py -help for further instructions")
-        return
+    seq = transform_op(transform)
 
+    if seq == None:
+        return
 
     # So far it's hardcoded for '.mp4' format
     # Need to remove everything after '.' to add transform to it's name
@@ -84,10 +50,8 @@ def apply_video_transform(transform, path):
     out.release()
     cv.destroyAllWindows()
 
-def apply_image_transform(transform, path): 
+def transform_op(transform):
     
-    img = np.asarray(cv.imread(path))
-
     if transform == 'flip_h':
         seq = iaa.Sequential([
              iaa.Fliplr(1),
@@ -120,11 +84,37 @@ def apply_image_transform(transform, path):
         seq = iaa.Sequential([
              iaa.AdditiveGaussianNoise(0.03, 10, True),
         ])
+    elif transform == 'dropout':
+        seq = iaa.Sequential([
+             iaa.Dropout(0.08, True),
+        ])
+    elif transform == 'salt':
+        seq = iaa.Sequential([
+             iaa.Salt(0.08, True),
+        ])
+    elif transform == 'salt_pepper':
+        seq = iaa.Sequential([
+             iaa.SaltAndPepper(0.08, True),
+        ])
+    elif transform == 'contrast':
+        seq = iaa.Sequential([
+             iaa.ContrastNormalization(1.5, True),
+        ])
     else:
-
         # So far it's only implemented horizontal flips 
-        print("Sorry, only 'flip_h' is implemented yet. \
+        print("Sorry, only those operations listed in help are implemented. \
                 Check data_augmentation.py -help for further instructions")
+        return None
+
+    return seq
+
+def apply_image_transform(transform, path): 
+    
+    img = np.asarray(cv.imread(path))
+
+    seq = transform_op(transform)
+
+    if seq == None:
         return
 
     images = []
@@ -162,12 +152,24 @@ argp.add_argument("-path", dest="path", type=str, nargs=1,
                  help="Usage: -path <path_to_video>", required=True)
 argp.add_argument("-op", dest="op", type=str, nargs=1,
                  help="Usage: -op flip_h"  + "\n" +
-                         "Avaible ops: " + '\n' +
-                         "flip_h : 50%% horizontal flip", required=True)
+                         "Avaible ops       : " + '\n' +
+                         "flip_h            : 50%% horizontal flip \
+                          invert            : pixel = 1 - pixel \
+                          bright            : pixel = 1.5 * pixel \
+                          dark              : pixel = 0.5 * pixel \
+                          blur              : guassian blur \
+                          sharp             : light sharp \
+                          dark_sharp        : dark sharp \
+                          gauss_noise       : gaussian noise \
+                          dropout           : black noise \
+                          salt              : white noise \
+                          salt and pepper   : white and black noise \
+                          contrast          : contrast normalization \
+                         ", required=True)
 try:
     args = argp.parse_args()
 except:
     argp.print_help(sys.stderr)
     exit(1)
 
-apply_video_transform(args.op[0], args.path[0])
+apply_image_transform(args.op[0], args.path[0])
