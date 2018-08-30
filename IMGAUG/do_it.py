@@ -23,8 +23,8 @@ def get_dirs(path, classes):
 
 
 classes = ['Falls', 'NotFalls']
-path = '/mnt/hotstorage/Data/URFD-TRAIN/'
-#path = 'URFD/'
+#path = '/mnt/hotstorage/Data/URFD-TRAIN/'
+path = 'URFD/'
 
 classes_dirs, classes_videos = get_dirs(path, classes) 
 

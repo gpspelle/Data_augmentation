@@ -1,4 +1,5 @@
 from imgaug import augmenters as iaa
+import os
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
@@ -136,6 +137,9 @@ def apply_image_transform(transform, path):
     
     pos = path.rfind('/')
     end_string = path[pos+1:]
+
+    print(end_string)
+
     new_end_string = transform + '_' + end_string
     new_path = path[:pos] + '/' + new_end_string
     
@@ -169,10 +173,17 @@ def apply_multiple_image_transform(transform, path):
             print("Sorry, only .jpg is accepted, but that's not hard to fix")
             return
 
+
         pos = path.rfind('/')
-        end_string = path[pos+1:]
-        new_end_string = transform + '_' + end_string
-        new_path = path[:pos] + '/' + new_end_string
+
+        second_pos = path[:pos-1].rfind('/')
+        end_string = path[second_pos+1:]
+        
+        if not os.path.exists(path[:second_pos] + '/' + transform + '_' + path[second_pos+1:pos]):
+            os.makedirs(path[:second_pos] + '/' + transform + '_' + path[second_pos+1:pos])
+
+        new_path = path[:second_pos] + '/' + transform + '_' + end_string
+
         #path = path[:-4] + '_' + transform + '.jpg'
         cv.imwrite(new_path, img_aug)
 
