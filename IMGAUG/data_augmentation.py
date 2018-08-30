@@ -1,4 +1,5 @@
 from imgaug import augmenters as iaa
+import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv
@@ -133,12 +134,48 @@ def apply_image_transform(transform, path):
         print("Sorry, only .jpg is accepted, but that's not hard to fix")
         return
     
-    path = path[:-4] + '_' + transform + '.jpg'
+    pos = path.rfind('/')
+    end_string = path[pos+1:]
+    new_end_string = transform + '_' + end_string
+    new_path = path[:pos] + '/' + new_end_string
+    
+    #path = path[:-4] + '_' + transform + '.jpg'
 
-    cv.imwrite(path, img_aug)
+    cv.imwrite(new_path, img_aug)
     #plt.axis("off")
     #img = plt.imshow(cv.cvtColor(img_aug, cv.COLOR_BGR2RGB))
     #plt.show()
+
+def apply_multiple_image_transform(transform, path): 
+    
+    seq = transform_op(transform)
+
+    if seq == None:
+        return
+
+    frames_path = glob.glob(path + '*.jpg') 
+    images = []
+
+    for image in frames_path:
+        img = np.asarray(cv.imread(image))
+        images.append(img)
+
+    images_aug = seq.augment_images(images)
+
+    for img_aug, path in zip(images_aug, frames_path):
+        # So far it's hardcoded for '.jpg' format
+        # Need to remove everything before '.' to add transform to it's name
+        if path[-4:] != '.jpg':
+            print("Sorry, only .jpg is accepted, but that's not hard to fix")
+            return
+
+        pos = path.rfind('/')
+        end_string = path[pos+1:]
+        new_end_string = transform + '_' + end_string
+        new_path = path[:pos] + '/' + new_end_string
+        print(new_path)
+        #path = path[:-4] + '_' + transform + '.jpg'
+        cv.imwrite(new_path, img_aug)
 
 if __name__ == '__main__':
     #print("***********************************************************",
@@ -172,4 +209,4 @@ if __name__ == '__main__':
         argp.print_help(sys.stderr)
         exit(1)
 
-    apply_image_transform(args.op[0], args.path[0])
+    apply_multiple_image_transform(args.op[0], args.path[0])
