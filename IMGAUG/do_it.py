@@ -23,21 +23,25 @@ def get_dirs(path, classes):
 
 
 classes = ['Falls', 'NotFalls']
-path = 'URFD/'
+path = '/mnt/hotstorage/Data/URFD-TRAIN/'
 
 classes_dirs, classes_videos = get_dirs(path, classes) 
 
-OF_operation_list = ['flip_h', 'invert', 'brigth', 'dark', 'blur', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+#OF_operation_list = ['flip_h', 'invert', 'brigth', 'dark', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+OF_operation_list = ['flip_h']
 
-pose_operation_list = ['flip_h', 'invert', 'brigth', 'dark', 'blur', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+#pose_operation_list = ['flip_h', 'invert', 'brigth', 'dark', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+pose_operation_list = ['flip_h']
 
-frame_operation_list = ['flip_h', 'invert', 'brigth', 'dark', 'blur', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+#frame_operation_list = ['flip_h', 'invert', 'brigth', 'dark', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+frame_operation_list = ['flip_h']
 
 streams = ['frame', 'pose', 'flow_x', 'flow_y']
 
 
 for c in range(len(classes)):
     for dir in classes_dirs[c]:
+        print(dir)
         frames = glob.glob(path + classes[c] + '/' + dir + '/frame_*.jpg') 
         flow_x = glob.glob(path + classes[c] + '/' + dir + '/flow_x*.jpg') 
         flow_y = glob.glob(path + classes[c] + '/' + dir + '/flow_y*.jpg') 

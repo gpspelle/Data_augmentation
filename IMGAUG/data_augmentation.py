@@ -141,35 +141,35 @@ def apply_image_transform(transform, path):
     #plt.show()
 
 if __name__ == '__main__':
-    print("***********************************************************",
-            file=sys.stderr)
-    print("             SEMANTIX - UNICAMP DATALAB 2018", file=sys.stderr)
-    print("***********************************************************",
-            file=sys.stderr)
+    #print("***********************************************************",
+    #        file=sys.stderr)
+    #print("             SEMANTIX - UNICAMP DATALAB 2018", file=sys.stderr)
+    #print("***********************************************************",
+    #        file=sys.stderr)
 
-argp = argparse.ArgumentParser(description='Data Augmentation Tool')
-argp.add_argument("-path", dest="path", type=str, nargs=1,
-                 help="Usage: -path <path_to_video>", required=True)
-argp.add_argument("-op", dest="op", type=str, nargs=1,
-                 help="Usage: -op flip_h"  + "\n" +
-                         "Avaible ops       : " + '\n' +
-                         "flip_h            : 50%% horizontal flip \
-                          invert            : pixel = 1 - pixel \
-                          bright            : pixel = 1.5 * pixel \
-                          dark              : pixel = 0.5 * pixel \
-                          blur              : guassian blur \
-                          sharp             : light sharp \
-                          dark_sharp        : dark sharp \
-                          gauss_noise       : gaussian noise \
-                          dropout           : black noise \
-                          salt              : white noise \
-                          salt and pepper   : white and black noise \
-                          contrast          : contrast normalization \
-                         ", required=True)
-try:
-    args = argp.parse_args()
-except:
-    argp.print_help(sys.stderr)
-    exit(1)
+    argp = argparse.ArgumentParser(description='Data Augmentation Tool')
+    argp.add_argument("-path", dest="path", type=str, nargs=1,
+                     help="Usage: -path <path_to_video>", required=True)
+    argp.add_argument("-op", dest="op", type=str, nargs=1,
+                     help="Usage: -op flip_h"  + "\n" +
+                             "Avaible ops       : " + '\n' +
+                             "flip_h            : 50%% horizontal flip \
+                              invert            : pixel = 1 - pixel \
+                              bright            : pixel = 1.5 * pixel \
+                              dark              : pixel = 0.5 * pixel \
+                              blur              : guassian blur \
+                              sharp             : light sharp \
+                              dark_sharp        : dark sharp \
+                              gauss_noise       : gaussian noise \
+                              dropout           : black noise \
+                              salt              : white noise \
+                              salt and pepper   : white and black noise \
+                              contrast          : contrast normalization \
+                             ", required=True)
+    try:
+        args = argp.parse_args()
+    except:
+        argp.print_help(sys.stderr)
+        exit(1)
 
-apply_image_transform(args.op[0], args.path[0])
+    apply_image_transform(args.op[0], args.path[0])
