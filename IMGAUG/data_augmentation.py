@@ -173,7 +173,6 @@ def apply_multiple_image_transform(transform, path):
         end_string = path[pos+1:]
         new_end_string = transform + '_' + end_string
         new_path = path[:pos] + '/' + new_end_string
-        print(new_path)
         #path = path[:-4] + '_' + transform + '.jpg'
         cv.imwrite(new_path, img_aug)
 

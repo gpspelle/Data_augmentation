@@ -28,8 +28,8 @@ path = '/mnt/hotstorage/Data/URFD-TRAIN/'
 
 classes_dirs, classes_videos = get_dirs(path, classes) 
 
-OF_operation_list = ['invert', 'brigth', 'dark', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
-#OF_operation_list = ['flip_h']
+#OF_operation_list = ['invert', 'brigth', 'dark', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
+OF_operation_list = ['flip_h']
 
 #pose_operation_list = ['invert', 'brigth', 'dark', 'sharp', 'dark_sharp', 'dropout', 'gauss_noise', 'salt', 'salt_pepper', 'contrast']
 pose_operation_list = ['flip_h']

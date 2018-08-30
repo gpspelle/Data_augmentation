@@ -14,10 +14,12 @@ And an example of usage:
 
 $ python3 change_resolution.py -op <operation> -path <image_path>
 
-Important! Avaible operations are listed in with $ python3 data_augmentation.py -help
-Importan2! There are two avaible functions, to augmentate images or videos,
+Important! Avaible data augmentation operations are listed in with $ python3 data_augmentation.py -help
+Importan2! There are three avaible functions, to augmentate images or videos,
 choose wisely changing the function call in the last lines of codes:
-apply_video_transform or apply_image_transform
+apply_video_transform, apply_image_transform, apply_multiple_image_transform.
+
+The name of these functions should intuit what they actually do.
 
 ## Todo
 
